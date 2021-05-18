@@ -2,6 +2,7 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const HtmlWebpackPugPlugin = require('html-webpack-pug-plugin');
 
 let mode = "development"
 let target = "web";
@@ -23,6 +24,13 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.pug$/,
+        exclude: /node_modules/,
+        use: {
+        loader: "pug-loader",
+        }
+      },
       {
         test: /\.(png|jpe?g|gif|svg)$/i,
         type: "asset",
@@ -53,8 +61,10 @@ module.exports = {
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin(), 
     new HtmlWebpackPlugin({
-      template: "./src/index.html"
-    })
+      template: "./src/pug/pages/index.pug",
+      filename: 'output.html',
+    }),
+    new HtmlWebpackPugPlugin()
   ],
   target: "web",
   devtool: "source-map",
